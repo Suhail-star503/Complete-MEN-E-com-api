@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="images"></div>
+
+    <script>
+        async function fetchAndDisplayImages() {
+            try {
+                const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2N2M2ZTZjMmUyZGNkOTRmZDczYWVkYTAiLCJlbWFpbCI6InN1aGFpbGFuc2FyaTIwMDMxMTA5QGdtYWlsLmNvbSIsImlhdCI6MTc0MTA4ODQ2MSwiZXhwIjoxNzQxMDkyMDYxfQ.RY6AJMHEFcNM9UvQAqNVFF6dkO5cx2j0WYZtJ4MTN1g"; // Adjust this line based on where you store the token
+                const response = await fetch('http://localhost:3000/api/product', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': token,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    const imagesDiv = document.getElementById('images');
+                    const baseUrl = 'http://localhost:3000/uploads/'; // Adjust this to your actual base URL for images
+                    data.Products.forEach(product => {
+                        const img = document.createElement('img');
+                        const h1=document.createElement('h1');
+                        h1.textContent=product.name;
+                        imagesDiv.appendChild(h1);
+                        img.src = baseUrl + product.imageUrl;
+                        img.alt = product.name;
+                        imagesDiv.appendChild(img);
+                    });
+                } else {
+                    console.error('Failed to retrieve products:', data.msg);
+                }
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        }
+
+        fetchAndDisplayImages();
+    </script>
+</body>
+</html>

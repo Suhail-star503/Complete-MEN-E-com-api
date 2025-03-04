@@ -1,6 +1,7 @@
 // Importing env
 import env from 'dotenv';
 env.config();
+import path from 'path';
 
 // Modules Imported
 import express from 'express';
@@ -30,7 +31,7 @@ app.use(express.urlencoded({extended: true}));
 // set up cors to allow us to accept requests from our client
 app.use(cors());
 
-
+app.use('/uploads', express.static(path.join(path.resolve(), 'src/uploads')));
 // Routes related to all features
 app.use('/api/users', userRouter);
 app.use('/api/product', productRouter);
